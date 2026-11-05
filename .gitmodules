@@ -1,0 +1,3 @@
+[submodule "Photoshop_Agentic/photoshop-mcp"]
+	path = Photoshop_Agentic/photoshop-mcp
+	url = https://github.com/alisaitteke/photoshop-mcp.git
