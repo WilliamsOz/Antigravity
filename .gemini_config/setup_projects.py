@@ -6,9 +6,9 @@ from pathlib import Path
 
 PROJECTS = [
     {
-        "id": "b6c5bde0-52eb-4473-8781-731c1cf350db",
-        "name": "LifeStyle",
-        "folder": "LifeStyle",
+        "id": "c5375825-1105-4197-bf9d-0587d30e1f35",
+        "name": "BetterWhenFree",
+        "folder": "BetterWhenFree",
     },
     {
         "id": "e323a621-a1e8-40ea-aae1-765193d5f076",
@@ -16,14 +16,24 @@ PROJECTS = [
         "folder": "Blender_Agentic",
     },
     {
-        "id": "2a6cff8e-6f29-4f99-b122-6472140faff2",
-        "name": "Photoshop_Agentic",
-        "folder": "Photoshop_Agentic",
+        "id": "091fa22c-d068-4166-8bd3-2f6a47e4c101",
+        "name": "Guitare",
+        "folder": "Guitare",
+    },
+    {
+        "id": "b6c5bde0-52eb-4473-8781-731c1cf350db",
+        "name": "LifeStyle",
+        "folder": "LifeStyle",
     },
     {
         "id": "fd7ba934-38aa-4acb-a8af-e0220179f098",
         "name": "Local_Agentic",
         "folder": "Local_Agentic",
+    },
+    {
+        "id": "2a6cff8e-6f29-4f99-b122-6472140faff2",
+        "name": "Photoshop_Agentic",
+        "folder": "Photoshop_Agentic",
     },
 ]
 
@@ -45,7 +55,13 @@ def setup():
             print(f"  [!] Dossier introuvable : {proj_folder}")
             continue
 
-        folder_uri = proj_folder.resolve().as_uri()
+        if os.name == "nt":
+            drive = proj_folder.drive.rstrip(":").lower()
+            rest = proj_folder.as_posix().split(":", 1)[-1]
+            folder_uri = f"file:///{drive}%3A{rest}"
+        else:
+            folder_uri = proj_folder.resolve().as_uri()
+
         project_config = {
             "id": proj["id"],
             "name": proj["name"],
@@ -85,7 +101,7 @@ def setup():
             print(f"  [OK] AGENTS.md copie vers {agents_dst}")
 
     print("\nTous les projets ont ete enregistres avec succes dans Antigravity !")
-    print("Relance l'application Antigravity pour voir tes 4 projets dans la barre laterale.")
+    print("Relance l'application Antigravity pour voir tes 6 projets dans la barre laterale.")
 
 if __name__ == "__main__":
     setup()
