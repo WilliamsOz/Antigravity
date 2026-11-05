@@ -1,0 +1,2 @@
+@T3_RULES.md
+@GEMINI.md
