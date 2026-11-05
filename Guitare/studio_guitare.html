@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="palissandre" data-paper="parchemin">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GuitarStudio — Nylon, fingerstyle et flamenco</title>
+  <meta name="description" content="Apprendre la guitare classique : cours, routines, répertoire et suivi de progression.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e5ab42'/%3E%3Ccircle cx='16' cy='16' r='8' fill='%2314100d'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="app/css/base.css">
+  <link rel="stylesheet" href="app/css/components.css">
+  <link rel="stylesheet" href="app/css/pages.css">
+</head>
+<body>
+  <div id="app" class="app"></div>
+  <noscript><p style="padding:2rem">GuitarStudio a besoin de JavaScript pour fonctionner.</p></noscript>
+  <audio id="levelup-audio" preload="auto" src="assets/audio/levelup.m4a"></audio>
+
+  <!-- Noyau -->
+  <script src="app/js/core/music.js"></script>
+  <script src="app/js/core/audio.js"></script>
+  <script src="app/js/core/pitch.js"></script>
+  <script src="app/js/core/game.js"></script>
+  <script src="app/js/core/store.js"></script>
+
+  <!-- Contenu -->
+  <script src="app/data/_init.js"></script>
+  <script src="app/data/chords.js"></script>
+  <script src="app/data/songs/debutant.js"></script>
+  <script src="app/data/songs/grilles.js"></script>
+  <script src="app/data/songs/intermediaire.js"></script>
+  <script src="app/data/songs/archives.js"></script>
+  <script src="app/data/songs/expert.js"></script>
+  <script src="app/data/exercises.js"></script>
+  <script src="app/data/routines.js"></script>
+  <script src="app/data/courses/partie1.js"></script>
+  <script src="app/data/courses/partie2.js"></script>
+  <script src="app/data/badges.js"></script>
+  <script src="app/data/library.js"></script>
+
+  <!-- Interface -->
+  <script src="app/js/ui/tabview.js"></script>
+  <script src="app/js/ui/ui.js"></script>
+  <script src="app/js/pages/home.js"></script>
+  <script src="app/js/pages/courses.js"></script>
+  <script src="app/js/pages/songs.js"></script>
+  <script src="app/js/pages/routines.js"></script>
+  <script src="app/js/pages/games.js"></script>
+  <script src="app/js/pages/tools.js"></script>
+  <script src="app/js/pages/progress.js"></script>
+  <script src="app/js/app.js"></script>
+</body>
+</html>
