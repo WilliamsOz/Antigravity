@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PriceHunter • Centre de Contrôle</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            500: '#38bdf8',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/custom.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎯</text></svg>">
+</head>
+<body class="min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
+
+    <!-- Scraping Progress Top Banner (Shown during active checks) -->
+    <div id="scraping-banner" class="hidden bg-slate-900 border-b border-sky-500/30 px-6 py-2 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <span class="inline-block animate-spin text-sky-400">🔄</span>
+                <span id="scraping-status-text" class="text-xs font-semibold text-sky-200 truncate">Actualisation des prix en cours...</span>
+            </div>
+            <div class="w-48 md:w-80 bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-700">
+                <div id="scraping-progress-bar" class="bg-sky-500 h-full progress-striped transition-all duration-300" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Brand -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center text-xl shadow-lg shadow-sky-500/20">
+                    🎯
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-extrabold text-lg tracking-tight text-white">PriceHunter</span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20">v1.0</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-[11px] text-slate-400">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 live-indicator"></span>
+                        <span>Serveur local actif</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Action Buttons -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <button onclick="triggerScrapeAll()" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1.5 shadow-sm transition">
+                    <span>🔄</span>
+                    <span class="hidden sm:inline">Tout Actualiser</span>
+                </button>
+                <button onclick="openAddModal()" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-sky-500 hover:bg-sky-400 text-white flex items-center gap-1.5 shadow-md shadow-sky-500/25 transition">
+                    <span>➕</span>
+                    <span>Ajouter un Produit</span>
+                </button>
+                <button onclick="openShutdownModal()" title="Arrêter PriceHunter" class="p-2 rounded-xl text-slate-400 hover:text-rose-400 hover:bg-rose-950/40 border border-transparent hover:border-rose-800/40 transition">
+                    🛑
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab Bar -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-1 border-t border-slate-800/50">
+            <button id="nav-products" onclick="switchTab('products')" class="nav-btn px-4 py-2.5 text-xs font-bold border-b-2 bg-sky-500/20 text-sky-400 border-sky-500/40 transition flex items-center gap-2">
+                <span>📋</span>
+                <span>Mes Produits Suivis</span>
+            </button>
+            <button id="nav-search" onclick="switchTab('search')" class="nav-btn px-4 py-2.5 text-xs font-bold border-b-2 text-slate-400 border-transparent hover:text-slate-200 transition flex items-center gap-2">
+                <span>🔎</span>
+                <span>Comparateur Multi-Boutiques</span>
+            </button>
+            <button id="nav-settings" onclick="switchTab('settings')" class="nav-btn px-4 py-2.5 text-xs font-bold border-b-2 text-slate-400 border-transparent hover:text-slate-200 transition flex items-center gap-2">
+                <span>⚙️</span>
+                <span>Paramètres & Alertes</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- TAB 1: PRODUCTS -->
+        <section id="tab-products" class="tab-content space-y-6">
+            <!-- KPI Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="glass-panel p-4 rounded-2xl">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Suivis</p>
+                    <p id="kpi-total" class="text-2xl font-extrabold text-white mt-1">0</p>
+                    <p class="text-[11px] text-slate-500 mt-0.5">Produits enregistrés</p>
+                </div>
+                <div class="glass-panel p-4 rounded-2xl">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">En Baisse</p>
+                    <p id="kpi-drops" class="text-2xl font-extrabold text-emerald-400 mt-1">0</p>
+                    <p class="text-[11px] text-emerald-500/80 mt-0.5">Offres sous prix d'origine</p>
+                </div>
+                <div class="glass-panel p-4 rounded-2xl">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Objectifs Atteints</p>
+                    <p id="kpi-targets" class="text-2xl font-extrabold text-sky-400 mt-1">0</p>
+                    <p class="text-[11px] text-sky-500/80 mt-0.5">Prix inférieur au prix cible</p>
+                </div>
+                <div class="glass-panel p-4 rounded-2xl">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Valeur Totale</p>
+                    <p id="kpi-value" class="text-2xl font-extrabold text-amber-400 mt-1">0.00 €</p>
+                    <p class="text-[11px] text-slate-500 mt-0.5">Panier global suivi</p>
+                </div>
+            </div>
+
+            <!-- Filters Bar -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 glass-panel p-3.5 rounded-2xl">
+                <!-- Search Input -->
+                <div class="relative w-full sm:w-80">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 text-sm">🔍</span>
+                    <input type="text" oninput="handleSearch(this.value)" placeholder="Filtrer par nom ou boutique..." class="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-900/80 border border-slate-700/80 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500">
+                </div>
+
+                <!-- Category Pills -->
+                <div class="flex flex-wrap items-center gap-1.5 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
+                    <button onclick="setCategory('all')" data-cat="all" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-500 text-white shadow-md shadow-sky-500/20">Tous</button>
+                    <button onclick="setCategory('high-tech')" data-cat="high-tech" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 text-slate-400 hover:text-white border border-slate-700/50">High-Tech</button>
+                    <button onclick="setCategory('sport')" data-cat="sport" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 text-slate-400 hover:text-white border border-slate-700/50">Sport</button>
+                    <button onclick="setCategory('fashion')" data-cat="fashion" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 text-slate-400 hover:text-white border border-slate-700/50">Mode</button>
+                    <button onclick="setCategory('food')" data-cat="food" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 text-slate-400 hover:text-white border border-slate-700/50">Drive / Courses</button>
+                    <button onclick="setCategory('general')" data-cat="general" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 text-slate-400 hover:text-white border border-slate-700/50">Général</button>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Dynamically populated -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-products" class="hidden text-center py-16 glass-panel rounded-2xl border border-slate-800">
+                <div class="text-4xl mb-3">📦</div>
+                <h3 class="text-base font-semibold text-white">Aucun produit trouvé</h3>
+                <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">Aucun article ne correspond à votre filtre ou aucun produit n'a encore été ajouté.</p>
+                <button onclick="openAddModal()" class="mt-4 px-4 py-2 rounded-xl text-xs font-semibold bg-sky-500 hover:bg-sky-400 text-white shadow-md transition">
+                    ➕ Ajouter un produit maintenant
+                </button>
+            </div>
+        </section>
+
+        <!-- TAB 2: MULTI-STORE SEARCH -->
+        <section id="tab-search" class="tab-content hidden space-y-6">
+            <div class="glass-panel p-6 rounded-2xl">
+                <div class="max-w-2xl mx-auto text-center mb-6">
+                    <h2 class="text-xl font-bold text-white">Comparateur Multi-Boutiques en Direct</h2>
+                    <p class="text-xs text-slate-400 mt-1">Recherchez un article parmi des dizaines de marchands (Amazon, Fnac, Decathlon, etc.) et suivez la meilleure offre en 1 clic.</p>
+                    
+                    <form onsubmit="event.preventDefault(); executeSearch();" class="mt-5 flex gap-2">
+                        <input id="search-tab-input" type="text" placeholder="Ex: Sony WH-1000XM5, Air Max 90, Barilla Linguine..." class="flex-1 px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white focus:outline-none focus:border-sky-500">
+                        <button id="search-tab-btn" type="submit" class="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-white text-xs font-bold shadow-md shadow-sky-500/25 transition">
+                            Rechercher & Comparer
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Results container -->
+                <div id="search-results-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="col-span-full text-center py-8 text-slate-500 text-xs">
+                        Saisissez des mots-clés ci-dessus pour lancer la comparaison.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: SETTINGS -->
+        <section id="tab-settings" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Notifications & Alerts Settings -->
+                <div class="lg:col-span-2 glass-panel p-6 rounded-2xl">
+                    <h2 class="text-base font-bold text-white mb-4 flex items-center gap-2">
+                        <span>🔔</span>
+                        <span>Configuration des Canaux d'Alertes</span>
+                    </h2>
+                    
+                    <form onsubmit="saveSettings(event)" class="space-y-5">
+                        <!-- macOS Banner -->
+                        <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between">
+                            <div>
+                                <h4 class="text-sm font-semibold text-white">Bannières natives macOS</h4>
+                                <p class="text-xs text-slate-400 mt-0.5">Affiche une notification système dans le Centre de Notifications macOS.</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <button type="button" onclick="testAlert('macos')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700">Tester</button>
+                                <input type="checkbox" id="sett-macos" class="w-4 h-4 rounded text-sky-500 focus:ring-sky-500 bg-slate-800 border-slate-700">
+                            </div>
+                        </div>
+
+                        <!-- Discord Webhook -->
+                        <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-white">Discord Webhook</h4>
+                                    <p class="text-xs text-slate-400 mt-0.5">Envoie de superbes fiches embeds avec photos et liens sur votre salon Discord.</p>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <button type="button" onclick="testAlert('discord')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700">Tester</button>
+                                    <input type="checkbox" id="sett-discord-enabled" class="w-4 h-4 rounded text-sky-500 focus:ring-sky-500 bg-slate-800 border-slate-700">
+                                </div>
+                            </div>
+                            <input type="url" id="sett-discord-url" placeholder="https://discord.com/api/webhooks/..." class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white">
+                        </div>
+
+                        <!-- Telegram Bot -->
+                        <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-white">Telegram Bot</h4>
+                                    <p class="text-xs text-slate-400 mt-0.5">Recevez vos alertes instantanément sur smartphone via un bot Telegram privé.</p>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <button type="button" onclick="testAlert('telegram')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700">Tester</button>
+                                    <input type="checkbox" id="sett-telegram-enabled" class="w-4 h-4 rounded text-sky-500 focus:ring-sky-500 bg-slate-800 border-slate-700">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <input type="text" id="sett-telegram-token" placeholder="Bot Token (ex: 123456:ABC-DEF)" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white">
+                                <input type="text" id="sett-telegram-chatid" placeholder="Chat ID (ex: 987654321)" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white">
+                            </div>
+                        </div>
+
+                        <!-- General rules -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-400 mb-1">Seuil d'alerte par défaut (%) :</label>
+                                <input type="number" id="sett-threshold" min="1" max="90" step="1" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-400 mb-1">Fréquence du planificateur interne :</label>
+                                <select id="sett-scheduler" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white">
+                                    <option value="2">Toutes les 2 heures</option>
+                                    <option value="4">Toutes les 4 heures</option>
+                                    <option value="6">Toutes les 6 heures (Recommandé)</option>
+                                    <option value="12">Toutes les 12 heures</option>
+                                    <option value="24">Une fois par jour (24h)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end pt-2">
+                            <button type="submit" class="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-white text-xs font-bold shadow-md transition">
+                                💾 Enregistrer les Paramètres
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Automation & System Status -->
+                <div class="space-y-6">
+                    <!-- LaunchAgent Card -->
+                    <div class="glass-panel p-6 rounded-2xl">
+                        <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2">
+                            <span>🕒</span>
+                            <span>Veille Système macOS (LaunchAgent)</span>
+                        </h3>
+                        <p class="text-xs text-slate-400 mb-4">
+                            Permet d'automatiser le suivi 3 fois par jour (08:00, 13:00, 19:00) même si l'application PriceHunter est fermée.
+                        </p>
+                        
+                        <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+                            <div id="sett-cron-status">
+                                <!-- Status badge -->
+                            </div>
+                            <button id="sett-cron-btn" onclick="toggleCron()" class="px-3 py-1.5 rounded-lg text-xs font-medium transition">
+                                Activer
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- DB Stats Card -->
+                    <div class="glass-panel p-6 rounded-2xl">
+                        <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2">
+                            <span>🗄️</span>
+                            <span>Base de Données Locale</span>
+                        </h3>
+                        <p id="sett-db-info" class="text-xs text-slate-400 mb-3">
+                            SQLite local • 0 token IA consommé
+                        </p>
+                        <div class="text-[11px] text-slate-500">
+                            Vos données restent 100% privées sur votre machine dans <code>data/prices.db</code>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL: ADD PRODUCT -->
+    <div id="add-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+        <div class="glass-panel max-w-lg w-full rounded-2xl p-6 shadow-2xl border border-slate-700 animate-in fade-in zoom-in duration-150">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <span>➕</span>
+                    <span>Ajouter un Produit au Suivi</span>
+                </h3>
+                <button onclick="closeAddModal()" class="text-slate-400 hover:text-white text-lg">&times;</button>
+            </div>
+
+            <form onsubmit="submitAddProduct(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">Méthode d'ajout :</label>
+                    <select id="add-type" onchange="updateAddFormLabels()" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-sky-500">
+                        <option value="url">URL directe d'un site marchand (Amazon, Fnac, Decathlon, etc.)</option>
+                        <option value="search">Recherche automatique du meilleur prix (nom du produit)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label id="add-value-label" class="block text-xs font-medium text-slate-300 mb-1">URL directe du produit :</label>
+                    <input id="add-value" type="text" required placeholder="https://www.amazon.fr/dp/..." class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-sky-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">Prix Cible souhaité (€) :</label>
+                        <input id="add-target" type="number" step="0.01" min="0" placeholder="Ex: 150.00 (optionnel)" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-sky-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">Seuil Alerte (% baisse) :</label>
+                        <input id="add-threshold" type="number" step="1" min="1" max="90" value="15" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-sky-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">Catégorie :</label>
+                    <select id="add-category" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-sky-500">
+                        <option value="general">Général</option>
+                        <option value="high-tech">High-Tech & Électronique</option>
+                        <option value="sport">Sport & Outdoor</option>
+                        <option value="fashion">Mode & Vêtements</option>
+                        <option value="food">Alimentation & Drive</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
+                    <button type="button" onclick="closeAddModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 transition">Annuler</button>
+                    <button id="add-submit-btn" type="submit" class="px-4 py-2 rounded-xl text-xs font-semibold bg-sky-500 hover:bg-sky-400 text-white shadow-md transition">
+                        Ajouter au Suivi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: EDIT TARGET -->
+    <div id="edit-target-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+        <div class="glass-panel max-w-sm w-full rounded-2xl p-6 shadow-2xl border border-slate-700">
+            <h3 class="text-sm font-bold text-white mb-3">🎯 Modifier le Prix Cible</h3>
+            <form onsubmit="submitEditTarget(event)" class="space-y-4">
+                <input type="hidden" id="edit-prod-id">
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Prix Cible (€) :</label>
+                    <input id="edit-target-val" type="number" step="0.01" min="0" placeholder="Laissez vide pour retirer" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Seuil Alerte Baisse (%) :</label>
+                    <input id="edit-thresh-val" type="number" step="1" min="1" max="90" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white">
+                </div>
+                <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
+                    <button type="button" onclick="closeEditTargetModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-300 hover:bg-slate-800">Annuler</button>
+                    <button type="submit" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-500 text-white">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: HISTORY CHART -->
+    <div id="history-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md">
+        <div class="glass-panel max-w-3xl w-full rounded-2xl p-6 shadow-2xl border border-slate-700 max-h-[90vh] flex flex-col">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                <h3 id="history-title" class="text-sm font-bold text-white truncate pr-4">Historique des Prix</h3>
+                <button onclick="closeHistoryModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
+            </div>
+
+            <!-- Canvas Chart -->
+            <div class="py-4 h-64 sm:h-80 w-full relative">
+                <canvas id="history-chart-canvas"></canvas>
+            </div>
+
+            <!-- History Table -->
+            <div class="flex-1 overflow-y-auto mt-2 border-t border-slate-800 pt-3">
+                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Relevés Récents</h4>
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="text-[11px] font-semibold text-slate-400 border-b border-slate-800">
+                            <th class="py-1 px-3">Date</th>
+                            <th class="py-1 px-3 text-right">Prix</th>
+                            <th class="py-1 px-3 text-right">Port</th>
+                            <th class="py-1 px-3 text-center">Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-table-body">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: SHUTDOWN CONFIRMATION -->
+    <div id="shutdown-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+        <div class="glass-panel max-w-sm w-full rounded-2xl p-6 shadow-2xl border border-slate-700 text-center">
+            <div class="text-3xl mb-3">🛑</div>
+            <h3 class="text-base font-bold text-white mb-1">Éteindre PriceHunter ?</h3>
+            <p class="text-xs text-slate-400 mb-5">Le serveur local s'arrêtera. Vos données et votre historique restent enregistrés localement.</p>
+            <div class="flex justify-center gap-3">
+                <button onclick="closeShutdownModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 transition">Annuler</button>
+                <button onclick="confirmShutdown()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-rose-600 hover:bg-rose-500 text-white shadow-md transition">Éteindre l'application</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container"></div>
+
+    <!-- Custom App JS -->
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

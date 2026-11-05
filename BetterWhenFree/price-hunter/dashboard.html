@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PriceHunter - Dashboard Visuel</title>
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #151c2c;
+      --card-border: #232f48;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --accent: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding: 2.5rem 1.5rem; min-height: 100vh; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    
+    /* Header */
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.2rem; flex-wrap: wrap; gap: 1.5rem; border-bottom: 1px solid var(--card-border); padding-bottom: 1.5rem; }
+    h1 { font-size: 1.85rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+    .badge-refresh { background: rgba(56, 189, 248, 0.12); color: var(--primary); padding: 0.55rem 1.1rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(56, 189, 248, 0.2); white-space: nowrap; }
+
+    /* KPI Card in Header */
+    .kpi-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 0.7rem 1.4rem; box-shadow: 0 4px 16px rgba(0,0,0,0.25); display: flex; align-items: center; gap: 0.9rem; }
+    .kpi-val { font-size: 1.9rem; font-weight: 800; color: #fff; line-height: 1; }
+    .kpi-label { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
+    .kpi-sub { font-size: 0.8rem; color: var(--accent); margin-top: 0.2rem; font-weight: 600; }
+
+    /* Actions Bar */
+    .actions-bar { display: flex; justify-content: flex-start; align-items: center; margin-bottom: 2rem; }
+    .search-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 0.75rem 1.25rem; color: #fff; width: 100%; max-width: 420px; font-size: 0.95rem; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    .search-box:focus { outline: 2px solid var(--primary); border-color: var(--primary); }
+
+    /* Products Grid */
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1.75rem; }
+    .product-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s; box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
+    .product-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 10px 25px rgba(56, 189, 248, 0.15); }
+    
+    .card-top { display: flex; gap: 1.2rem; padding: 1.5rem; }
+    .prod-img { width: 100px; height: 100px; object-fit: contain; background: #fff; border-radius: 12px; padding: 0.4rem; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    .prod-info { flex: 1; min-width: 0; }
+    .prod-cat { display: inline-block; background: rgba(148, 163, 184, 0.15); color: #cbd5e1; font-size: 0.75rem; padding: 0.25rem 0.6rem; border-radius: 6px; text-transform: uppercase; font-weight: 700; margin-bottom: 0.4rem; letter-spacing: 0.05em; }
+    .prod-title { font-size: 1.05rem; font-weight: 700; line-height: 1.4; max-height: 2.8em; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; color: #fff; }
+    .prod-store { font-size: 0.85rem; color: var(--primary); margin-top: 0.4rem; font-weight: 600; }
+
+    .card-pricing { padding: 0 1.5rem 1.5rem; display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--card-border); }
+    .price-main { font-size: 2.2rem; font-weight: 800; color: #fbbf24; line-height: 1; }
+    .price-orig { text-decoration: line-through; color: var(--text-muted); font-size: 1rem; margin-right: 0.6rem; }
+    .badge-discount { background: rgba(239, 68, 68, 0.2); color: #f87171; padding: 0.25rem 0.55rem; border-radius: 6px; font-weight: 700; font-size: 0.85rem; }
+    .target-badge { font-size: 0.82rem; padding: 0.35rem 0.7rem; border-radius: 8px; font-weight: 600; margin-top: 0.5rem; display: inline-block; }
+    .target-badge.reached { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .target-badge.waiting { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+
+    .card-meta { padding: 0.9rem 1.5rem; font-size: 0.82rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; background: rgba(11, 15, 25, 0.5); }
+    .card-footer { padding: 1.2rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+    .btn-store { background: #2563eb; color: white; text-decoration: none; padding: 0.6rem 1.2rem; border-radius: 10px; font-size: 0.88rem; font-weight: 700; transition: 0.2s; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+    .btn-store:hover { background: #3b82f6; transform: translateY(-1px); }
+    .stock-badge { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; font-weight: 700; }
+    .stock-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .in-stock { color: #34d399; }
+    .in-stock .stock-dot { background: #34d399; }
+    .out-of-stock { color: #f87171; }
+    .out-of-stock .stock-dot { background: #f87171; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>PriceHunter Dashboard</h1>
+
+      <div class="kpi-card">
+        <div class="kpi-val">4</div>
+        <div>
+          <div class="kpi-label">Produits Suivis</div>
+          <div class="kpi-sub">3 disponible(s) en stock</div>
+        </div>
+      </div>
+
+      <div class="badge-refresh">Dernière mise à jour : 05/11/2026 à 20:59:26</div>
+    </header>
+
+    <!-- Actions & Filter -->
+    <div class="actions-bar">
+      <input type="text" class="search-box" id="search" placeholder="🔍 Filtrer un produit..." onkeyup="filterCards()">
+    </div>
+
+    <!-- Products Cards Grid -->
+    <div class="product-grid" id="grid">
+
+      <div class="product-card" data-title="moai touring sup 11'6 complete package">
+        <div class="card-top">
+          <img src="https://moaithebrand.com/cdn/shop/files/M-21116-00_c73c690c-5845-4739-95ee-df41903e087c.png?v=1719491419&width=800" alt="MOAI Touring SUP 11'6 Complete Package" class="prod-img" onerror="this.src='https://via.placeholder.com/100?text=Produit'">
+          <div class="prod-info">
+            <span class="prod-cat">sport</span>
+            <div class="prod-title" title="MOAI Touring SUP 11'6 Complete Package">MOAI Touring SUP 11'6 Complete Package</div>
+            <div class="prod-store">📍 moaithebrand.com</div>
+          </div>
+        </div>
+
+        <div class="card-pricing">
+          <div>
+            <div></div>
+            <div class="price-main">449.00 €</div>
+            <div class="target-badge waiting">🎯 Cible : 400.00 €</div>
+          </div>
+          <div style="text-align: right; font-size: 0.85rem; color: var(--text-muted);">
+            Plus bas : <strong style="color: #fff;">449.00 €</strong>
+          </div>
+        </div>
+
+        <div class="card-meta">
+          <span>🕒 Relevé le 2026-11-05T19:59:12</span>
+          <span class="stock-badge out-of-stock"><span class="stock-dot"></span>Rupture</span>
+        </div>
+
+        <div class="card-footer">
+          <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">ID #5</span>
+          <a href="https://moaithebrand.com/products/moai-touring-sup-11-6-complete-package" target="_blank" class="btn-store">Voir sur moaithebrand.com ↗</a>
+        </div>
+      </div>
+
+      <div class="product-card" data-title="aqua marina hyper 11'6 touring sup double chambre">
+        <div class="card-top">
+          <img src="https://m.media-amazon.com/images/I/61Fep4Ycw7L._AC_SY300_SX300_QL70_ML2_.jpg" alt="Aqua Marina Hyper 11'6 Touring SUP Double Chambre" class="prod-img" onerror="this.src='https://via.placeholder.com/100?text=Produit'">
+          <div class="prod-info">
+            <span class="prod-cat">sport</span>
+            <div class="prod-title" title="Aqua Marina Hyper 11'6 Touring SUP Double Chambre">Aqua Marina Hyper 11'6 Touring SUP Double Chambre</div>
+            <div class="prod-store">📍 amazon.fr</div>
+          </div>
+        </div>
+
+        <div class="card-pricing">
+          <div>
+            <div><span class="price-orig">109.99 €</span></div>
+            <div class="price-main">577.40 €</div>
+            <div class="target-badge waiting">🎯 Cible : 420.00 €</div>
+          </div>
+          <div style="text-align: right; font-size: 0.85rem; color: var(--text-muted);">
+            Plus bas : <strong style="color: #fff;">479.00 €</strong>
+          </div>
+        </div>
+
+        <div class="card-meta">
+          <span>🕒 Relevé le 2026-11-05T19:59:23</span>
+          <span class="stock-badge in-stock"><span class="stock-dot"></span>En stock</span>
+        </div>
+
+        <div class="card-footer">
+          <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">ID #4</span>
+          <a href="https://www.amazon.fr/dp/B0BQKCJVX1" target="_blank" class="btn-store">Voir sur amazon.fr ↗</a>
+        </div>
+      </div>
+
+      <div class="product-card" data-title="pack stand up paddle gonflable sroka easy 11'6">
+        <div class="card-top">
+          <img src="https://srokacompany.com/cdn/shop/files/imagepdoduit-easy_74c5a9fd-e2af-4a65-9a8c-4e24649c30eb.png" alt="Pack Stand Up Paddle Gonflable SROKA Easy 11'6" class="prod-img" onerror="this.src='https://via.placeholder.com/100?text=Produit'">
+          <div class="prod-info">
+            <span class="prod-cat">sport</span>
+            <div class="prod-title" title="Pack Stand Up Paddle Gonflable SROKA Easy 11'6">Pack Stand Up Paddle Gonflable SROKA Easy 11'6</div>
+            <div class="prod-store">📍 srokacompany.com</div>
+          </div>
+        </div>
+
+        <div class="card-pricing">
+          <div>
+            <div></div>
+            <div class="price-main">279.00 €</div>
+            <div class="target-badge waiting">🎯 Cible : 270.00 €</div>
+          </div>
+          <div style="text-align: right; font-size: 0.85rem; color: var(--text-muted);">
+            Plus bas : <strong style="color: #fff;">249.00 €</strong>
+          </div>
+        </div>
+
+        <div class="card-meta">
+          <span>🕒 Relevé le 2026-11-05T19:59:24</span>
+          <span class="stock-badge in-stock"><span class="stock-dot"></span>En stock</span>
+        </div>
+
+        <div class="card-footer">
+          <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">ID #3</span>
+          <a href="https://srokacompany.com/products/stand-up-paddle-gonflable-easy?variant=57282307457349" target="_blank" class="btn-store">Voir sur srokacompany.com ↗</a>
+        </div>
+      </div>
+
+      <div class="product-card" data-title="philips blender mixeur 5000 problend plus, 1200w, bol verre 2l + acc., noir">
+        <div class="card-top">
+          <img src="https://m.media-amazon.com/images/I/61pjHAuEULL._AC_SY300_SX300_QL70_ML2_.jpg" alt="Philips Blender mixeur 5000 ProBlend Plus, 1200W, Bol verre 2L + acc., Noir" class="prod-img" onerror="this.src='https://via.placeholder.com/100?text=Produit'">
+          <div class="prod-info">
+            <span class="prod-cat">cuisine</span>
+            <div class="prod-title" title="Philips Blender mixeur 5000 ProBlend Plus, 1200W, Bol verre 2L + acc., Noir">Philips Blender mixeur 5000 ProBlend Plus, 1200W, Bol verre 2L + acc., Noir</div>
+            <div class="prod-store">📍 amazon.fr</div>
+          </div>
+        </div>
+
+        <div class="card-pricing">
+          <div>
+            <div><span class="price-orig">99.99 €</span></div>
+            <div class="price-main">104.99 €</div>
+            <div class="target-badge waiting">🎯 Cible : 75.00 €</div>
+          </div>
+          <div style="text-align: right; font-size: 0.85rem; color: var(--text-muted);">
+            Plus bas : <strong style="color: #fff;">79.78 €</strong>
+          </div>
+        </div>
+
+        <div class="card-meta">
+          <span>🕒 Relevé le 2026-10-31T13:59:31</span>
+          <span class="stock-badge in-stock"><span class="stock-dot"></span>En stock</span>
+        </div>
+
+        <div class="card-footer">
+          <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">ID #2</span>
+          <a href="https://www.amazon.fr/dp/B0CX23H3G6" target="_blank" class="btn-store">Voir sur amazon.fr ↗</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function filterCards() {
+      const q = document.getElementById('search').value.toLowerCase();
+      const cards = document.querySelectorAll('.product-card');
+      cards.forEach(card => {
+        const title = card.getAttribute('data-title') || '';
+        card.style.display = title.includes(q) ? 'flex' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>

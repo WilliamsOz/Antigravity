@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# PriceHunter macOS App Launcher
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+APP_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+FALLBACK_ROOT="/Users/willyiony/Desktop/workdirectory/Antigravity/BetterWhenFree/price-hunter"
+
+if [ -f "$APP_ROOT/scripts/run_app.py" ]; then
+    TARGET_DIR="$APP_ROOT"
+elif [ -f "$FALLBACK_ROOT/scripts/run_app.py" ]; then
+    TARGET_DIR="$FALLBACK_ROOT"
+else
+    osascript -e 'display alert "PriceHunter" message "Dossier source PriceHunter introuvable."'
+    exit 1
+fi
+
+cd "$TARGET_DIR" || exit 1
+"$TARGET_DIR/.venv/bin/python" "$TARGET_DIR/scripts/run_app.py"

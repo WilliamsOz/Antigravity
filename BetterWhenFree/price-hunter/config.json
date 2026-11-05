@@ -1,0 +1,29 @@
+{
+  "general": {
+    "currency": "EUR",
+    "country": "FR",
+    "headless_browser": true,
+    "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+  },
+  "alerts": {
+    "default_discount_threshold_percent": 18.0,
+    "macos_banner_enabled": true,
+    "discord": {
+      "enabled": false,
+      "webhook_url": ""
+    },
+    "telegram": {
+      "enabled": false,
+      "bot_token": "",
+      "chat_id": ""
+    }
+  },
+  "food_drive": {
+    "postal_code": "75001",
+    "preferred_stores": [
+      "leclerc",
+      "carrefour"
+    ]
+  },
+  "scheduler": {}
+}

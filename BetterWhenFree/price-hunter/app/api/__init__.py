@@ -1,0 +1,3 @@
+"""
+PriceHunter API Endpoints
+"""

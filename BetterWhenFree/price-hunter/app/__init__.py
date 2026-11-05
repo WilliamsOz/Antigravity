@@ -1,0 +1,3 @@
+"""
+PriceHunter Web Application Package
+"""

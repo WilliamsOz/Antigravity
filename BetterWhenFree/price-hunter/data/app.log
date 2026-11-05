@@ -1,0 +1,148 @@
+INFO:     Started server process [22049]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+🚀 [APScheduler] Planificateur automatique actif (toutes les 6h).
+INFO:     127.0.0.1:54462 - "GET /api/system/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54463 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54463 - "GET /static/css/custom.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54464 - "GET /static/js/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54468 - "GET /api/tracker/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54463 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54464 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54474 - "GET /api/system/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54475 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54476 - "POST /api/system/shutdown HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [22049]
+🛑 [APScheduler] Planificateur arrêté.
+INFO:     Started server process [22068]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+🚀 [APScheduler] Planificateur automatique actif (toutes les 6h).
+INFO:     127.0.0.1:54482 - "GET /api/system/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54483 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54483 - "GET /static/css/custom.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:54484 - "GET /static/js/app.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:54485 - "GET /api/tracker/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54483 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54484 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54486 - "GET /api/system/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54495 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54495 - "GET /api/settings HTTP/1.1" 200 OK
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-08-29 15:10:55 CEST)" was missed by 0:43:43.764820
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-09-03 03:10:55 CEST)" was missed by 4:45:28.371777
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-09-04 03:10:55 CEST)" was missed by 0:53:46.144416
+⏰ [APScheduler] Démarrage du cycle de vérification automatique des prix...
+INFO:     127.0.0.1:59159 - "GET /api/system/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59160 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59160 - "GET /static/js/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59161 - "GET /static/css/custom.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:59164 - "GET /api/tracker/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59161 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59160 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59213 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59215 - "GET /api/products HTTP/1.1" 200 OK
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-09-06 15:10:55 CEST)" was missed by 1:30:34.088592
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-09-07 03:10:55 CEST)" was missed by 1:27:21.312361
+INFO:     127.0.0.1:61534 - "GET /api/system/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61535 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61535 - "GET /static/js/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61536 - "GET /static/css/custom.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:61539 - "GET /api/tracker/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61536 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61535 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61580 - "GET /api/system/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61581 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61583 - "GET /api/tracker/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61582 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61581 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61585 - "POST /api/system/shutdown HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [22068]
+🛑 [APScheduler] Planificateur arrêté.
+INFO:     Started server process [42332]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+🚀 [APScheduler] Planificateur automatique actif (toutes les 6h).
+INFO:     127.0.0.1:61591 - "GET /api/system/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61592 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61594 - "GET /api/tracker/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61593 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61592 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61658 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61660 - "GET /api/tracker/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61659 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61658 - "GET /api/products HTTP/1.1" 200 OK
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-09-08 03:59:12 CEST)" was missed by 4:07:54.859332
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-09-13 15:59:12 CEST)" was missed by 0:14:55.307318
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-09-13 21:59:12 CEST)" was missed by 5:59:33.551884
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-09-15 15:59:12 CEST)" was missed by 2:08:51.752951
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-09-16 09:59:12 CEST)" was missed by 4:34:25.483252
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-09-16 15:59:12 CEST)" was missed by 0:43:24.008552
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-09-18 21:59:12 CEST)" was missed by 0:09:26.524179
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-09-19 21:59:12 CEST)" was missed by 5:24:28.546123
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-09-21 21:59:12 CEST)" was missed by 3:51:50.560417
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-09-24 21:59:12 CEST)" was missed by 3:49:30.384871
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-09-25 21:59:12 CEST)" was missed by 5:03:38.044767
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-09-26 21:59:12 CEST)" was missed by 5:56:53.957879
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-09-28 21:59:12 CEST)" was missed by 3:22:04.227286
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-09-29 21:59:12 CEST)" was missed by 3:08:51.981281
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-09-30 21:59:12 CEST)" was missed by 4:17:44.948479
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-02 21:59:12 CEST)" was missed by 5:27:43.909880
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-03 15:59:12 CEST)" was missed by 3:48:48.201917
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-04 15:59:12 CEST)" was missed by 1:52:34.631234
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-08 03:59:12 CEST)" was missed by 0:36:34.018449
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-10 15:59:12 CEST)" was missed by 1:03:47.869325
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-10 21:59:12 CEST)" was missed by 1:44:24.986819
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-11 21:59:12 CEST)" was missed by 1:57:12.100107
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-12 21:59:12 CEST)" was missed by 3:02:26.786727
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-13 09:59:12 CEST)" was missed by 5:57:13.707461
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-13 15:59:12 CEST)" was missed by 4:45:30.684956
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-13 21:59:12 CEST)" was missed by 3:37:47.970391
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-14 21:59:12 CEST)" was missed by 3:58:57.384307
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-17 21:59:12 CEST)" was missed by 1:25:22.856118
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-18 03:59:12 CEST)" was missed by 0:29:37.264921
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-18 15:59:12 CEST)" was missed by 3:38:47.191490
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-18 21:59:12 CEST)" was missed by 0:23:38.107192
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-19 21:59:12 CEST)" was missed by 3:36:50.368609
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-21 21:59:12 CEST)" was missed by 5:42:32.195781
+⏰ [APScheduler] Démarrage du cycle de vérification automatique des prix...
+⏰ [APScheduler] Démarrage du cycle de vérification automatique des prix...
+⏰ [APScheduler] Démarrage du cycle de vérification automatique des prix...
+⏰ [APScheduler] Démarrage du cycle de vérification automatique des prix...
+⏰ [APScheduler] Démarrage du cycle de vérification automatique des prix...
+⏰ [APScheduler] Démarrage du cycle de vérification automatique des prix...
+⏰ [APScheduler] Démarrage du cycle de vérification automatique des prix...
+⏰ [APScheduler] Démarrage du cycle de vérification automatique des prix...
+⏰ [APScheduler] Démarrage du cycle de vérification automatique des prix...
+⏰ [APScheduler] Démarrage du cycle de vérification automatique des prix...
+⏰ [APScheduler] Démarrage du cycle de vérification automatique des prix...
+⏰ [APScheduler] Démarrage du cycle de vérification automatique des prix...
+⏰ [APScheduler] Démarrage du cycle de vérification automatique des prix...
+⏰ [APScheduler] Démarrage du cycle de vérification automatique des prix...
+INFO:     127.0.0.1:58089 - "GET /api/system/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58090 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58091 - "GET /static/js/app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58090 - "GET /static/css/custom.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58094 - "GET /api/tracker/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58090 - "GET /api/settings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58091 - "GET /api/products HTTP/1.1" 200 OK
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-24 03:59:12 CEST)" was missed by 1:04:32.743749
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-25 14:59:12 CET)" was missed by 3:16:39.672971
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-25 20:59:12 CET)" was missed by 3:36:24.069711
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-28 14:59:12 CET)" was missed by 1:36:54.324959
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-30 20:59:12 CET)" was missed by 5:28:57.373333
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-10-31 14:59:12 CET)" was missed by 4:27:44.706533
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-11-01 14:59:12 CET)" was missed by 2:47:43.582540
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-11-01 20:59:12 CET)" was missed by 0:14:23.592169
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-11-02 02:59:12 CET)" was missed by 1:23:28.786384
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-11-03 02:59:12 CET)" was missed by 0:36:50.114734
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-11-04 14:59:12 CET)" was missed by 0:10:38.747053
+Run time of job "scheduled_price_check (trigger: interval[6:00:00], next run at: 2026-11-05 20:59:12 CET)" was missed by 4:32:06.743003
