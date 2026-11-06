@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Semaine Type - Préparation Semi-Marathon d'Annecy</title>
+  <style>
+    @page {
+      size: A4 landscape;
+      margin: 8mm 10mm;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1a1a1a;
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 6px;
+      margin-bottom: 8px;
+    }
+    .title-block h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #0f172a;
+    }
+    .title-block .subtitle {
+      font-size: 11px;
+      color: #475569;
+      font-weight: 500;
+    }
+    .profile-badge {
+      display: flex;
+      gap: 12px;
+      background: #f1f5f9;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      font-size: 10.5px;
+    }
+    .profile-badge strong {
+      color: #0f172a;
+    }
+    .zones-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .zone-card {
+      padding: 5px 8px;
+      border-radius: 4px;
+      border-left: 4px solid #000;
+      background: #f8fafc;
+      font-size: 10px;
+    }
+    .zone-card.ef {
+      border-color: #10b981;
+      background: #ecfdf5;
+    }
+    .zone-card.as21 {
+      border-color: #3b82f6;
+      background: #eff6ff;
+    }
+    .zone-card.seuil {
+      border-color: #f59e0b;
+      background: #fffbeb;
+    }
+    .zone-title {
+      font-weight: 700;
+      font-size: 10.5px;
+      display: flex;
+      justify-content: space-between;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 8px;
+      table-layout: fixed;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 6px 7px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background-color: #0f172a;
+      color: #ffffff;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    tr:nth-child(even) td {
+      background-color: #f8fafc;
+    }
+    .col-jour { width: 9%; }
+    .col-discipline { width: 15%; }
+    .col-duree { width: 9%; }
+    .col-contenu { width: 26%; }
+    .col-allure { width: 14%; }
+    .col-focus { width: 22%; }
+    .col-check { width: 5%; text-align: center; }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 9.5px;
+      margin-bottom: 2px;
+    }
+    .tag-swim { background: #cffafe; color: #0e7490; }
+    .tag-run { background: #dbeafe; color: #1d4ed8; }
+    .tag-workout { background: #fef3c7; color: #b45309; }
+    .tag-rest { background: #f3f4f6; color: #4b5563; }
+
+    .target-pace {
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .checkbox-box {
+      width: 16px;
+      height: 16px;
+      border: 2px solid #94a3b8;
+      border-radius: 3px;
+      margin: 4px auto 0 auto;
+    }
+    .footer-rules {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 10px;
+      border-top: 1px solid #cbd5e1;
+      padding-top: 6px;
+      font-size: 9.5px;
+      color: #334155;
+    }
+    .footer-rules strong {
+      color: #0f172a;
+    }
+    .rule-item {
+      margin-bottom: 2px;
+    }
+    @media screen {
+      body {
+        max-width: 1100px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="title-block">
+      <h1>Structure Semaine Type — Cible 3 Sorties Course</h1>
+      <div class="subtitle">Préparation Semi-Marathon du Lac d'Annecy • Objectif 2h00 - 2h05</div>
+    </div>
+    <div class="profile-badge">
+      <div>Gabarit : <strong>1m80 / 85 kg</strong></div>
+      <div>VMA Réf : <strong>13.0 km/h</strong></div>
+      <div>Volume Course : <strong>3 séances / sem</strong></div>
+    </div>
+  </div>
+
+  <!-- REPERES D'ALLURE -->
+  <div class="zones-bar">
+    <div class="zone-card ef">
+      <div class="zone-title"><span>Endurance Fondamentale (EF)</span> <span>65-72% VMA</span></div>
+      <div><strong>6:45 à 7:15 /km</strong> (8,4 - 8,9 km/h) • Aisance respiratoire totale, parole continue.</div>
+    </div>
+    <div class="zone-card as21">
+      <div class="zone-title"><span>Allure Spécifique Semi (AS21)</span> <span>78-82% VMA</span></div>
+      <div><strong>5:45 à 6:00 /km</strong> (10,0 - 10,4 km/h) • Rythme de croisière régulier pour le jour J.</div>
+    </div>
+    <div class="zone-card seuil">
+      <div class="zone-title"><span>Seuil Aérobie / Tempo</span> <span>85-88% VMA</span></div>
+      <div><strong>5:15 à 5:30 /km</strong> (11,0 - 11,4 km/h) • Contrôlé, recyclage lactique, foulée compacte.</div>
+    </div>
+  </div>
+
+  <!-- TABLEAU PRINCIPAL -->
+  <table>
+    <thead>
+      <tr>
+        <th class="col-jour">Jour</th>
+        <th class="col-discipline">Discipline</th>
+        <th class="col-duree">Durée</th>
+        <th class="col-contenu">Contenu de la Séance</th>
+        <th class="col-allure">Allure / Intensité</th>
+        <th class="col-focus">Focus & Consignes Clés</th>
+        <th class="col-check">Fait</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Lundi</strong></td>
+        <td><span class="tag tag-swim">NATATION</span><br>Décharge & Récup</td>
+        <td>1h00</td>
+        <td>Nage continue libre (crawl/dos), travail d'amplitude, battements souples et éducatifs.</td>
+        <td>Aérobie douce<br>(RPE 4-5 / 10)</td>
+        <td>Récup active du week-end. Drainage articulaire sans aucun impact sur tendons/genoux.</td>
+        <td><div class="checkbox-box"></div></td>
+      </tr>
+      <tr>
+        <td><strong>Mardi</strong></td>
+        <td><span class="tag tag-run">COURSE 1</span><br>Footing EF</td>
+        <td>45' - 1h</td>
+        <td>Footing continu et régulier, terrain plat ou souple privilégié (stabilisé / herbe / parc).</td>
+        <td><span class="target-pace">6:45 - 7:15/km</span><br>(Zone 2 / EF pure)</td>
+        <td><strong>Ralentir impérativement.</strong> Si l'essoufflement arrive, marcher 30s. Construction capillaire.</td>
+        <td><div class="checkbox-box"></div></td>
+      </tr>
+      <tr>
+        <td><strong>Mercredi</strong></td>
+        <td><span class="tag tag-workout">WORKOUT 1</span><br>Haut & Core</td>
+        <td>45' - 1h</td>
+        <td>Tractions, Dips, Pompes lestées ou poids de corps + gainage statique & dynamique.</td>
+        <td>Intensité modérée<br>(RPE 7-8 / 10)</td>
+        <td><strong>Zéro fatigue sur les jambes.</strong> Focus gainage transverse pour éviter l'affaissement du bassin.</td>
+        <td><div class="checkbox-box"></div></td>
+      </tr>
+      <tr>
+        <td><strong>Jeudi</strong></td>
+        <td><span class="tag tag-run">COURSE 2</span><br>Qualité / Rythme</td>
+        <td>50' - 1h</td>
+        <td>20' échauffement EF + Blocs au Seuil ou AS21 (ex: 3x1500m à 3x2000m, r=2' trot) + 10' calme.</td>
+        <td><span class="target-pace">5:15 - 5:30/km</span> (seuil)<br>ou 5:45 - 6:00 (AS21)</td>
+        <td>Foulée rasante et cadence (~170-175 ppm). Pas de sprint : régularité parfaite sur chaque fraction.</td>
+        <td><div class="checkbox-box"></div></td>
+      </tr>
+      <tr>
+        <td><strong>Vendredi</strong></td>
+        <td><span class="tag tag-workout">WORKOUT 2</span><br>Full Body & Renfo</td>
+        <td>45 min</td>
+        <td>Full body léger ou spécifique chaîne post : fessiers, mollets, soléaires, ischios, gainage.</td>
+        <td>Contrôlé, sans échec<br>(RPE 6-7 / 10)</td>
+        <td><strong>Pas de squat lourd.</strong> Blindage articulaire préventif contre les périostites et le TFL.</td>
+        <td><div class="checkbox-box"></div></td>
+      </tr>
+      <tr>
+        <td><strong>Samedi</strong></td>
+        <td><span class="tag tag-rest">REPOS</span><br>ou Optionnel</td>
+        <td>-</td>
+        <td><strong>Repos complet prioritaire</strong> (ou option séance courte : Workout 3 haut du corps OU Natation 2 de 45').</td>
+        <td>Récupération passive<br>ou très légère</td>
+        <td>Sommeil qualitatif, hydratation (1,5 - 2L eau), recharge glycogénique pour la sortie du dimanche.</td>
+        <td><div class="checkbox-box"></div></td>
+      </tr>
+      <tr>
+        <td><strong>Dimanche</strong></td>
+        <td><span class="tag tag-run">COURSE 3</span><br>Sortie Longue (SL)</td>
+        <td>1h10 à 1h45</td>
+        <td>Sortie continue progressive (départ très lent). À partir de février : intégrer 2x15' ou 3x2000m AS21.</td>
+        <td><span class="target-pace">6:45 - 7:15/km</span><br>(+ blocs 5:50/km)</td>
+        <td><strong>La séance reine.</strong> Emporter une flasque d'eau. Travail du mental et tolérance aux chocs (85 kg).</td>
+        <td><div class="checkbox-box"></div></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- FOOTER / RÈGLES D'OR -->
+  <div class="footer-rules">
+    <div>
+      <div class="rule-item"><strong>1. Règle des 80 / 20 :</strong> 80% de ton volume kilométrique doit être réalisé en vraie aisance respiratoire (EF). La vitesse s'acquiert en courant lentement.</div>
+      <div class="rule-item"><strong>2. Vigilance 85 kg :</strong> Si une douleur tendineuse anormale (Achille, rotule, tibia) persiste plus de 48h, remplace la course par 1h de vélo ou natation. Zéro fierté mal placée.</div>
+    </div>
+    <div style="text-align: right;">
+      <div>Semaine N° : __________ | Kilométrage total : __________ km</div>
+      <div>Poids moyen : __________ kg | Sensations générales : /10</div>
+    </div>
+  </div>
+
+</body>
+</html>
