@@ -27,9 +27,34 @@ _ancienne_version/      Ton appli Gemini et tes notes d'origine, intactes
 
 Les grilles d'accords s'écoutent aussi. Les trois archives restent sans lecture : elles ne sont pas vérifiées.
 
-## Ta progression
+## Lancement & Sauvegarde automatique
 
-Elle est enregistrée dans le navigateur. Pense à l'exporter de temps en temps : **Réglages → Exporter ma progression**.
+Pour que ta progression (XP, niveaux, séries, leçons) soit **automatiquement sauvegardée dans les fichiers du projet** :
+
+- **Sur Mac** : Double-clique sur **`start.command`** (ou lance `npm start` ou `node server.js` dans le terminal).
+- **Sur Windows** : Double-clique sur **`start.bat`** (ou lance `npm start` ou `node server.js`).
+
+L'application s'ouvre toute seule dans ton navigateur (`http://localhost:3000`).
+Chaque fois que tu gagnes de l'XP ou passes un niveau, elle met à jour en temps réel :
+- **`progression.json`** (fichier principal de progression)
+- **`app/progression.js`** (secours statique)
+
+*(Tu peux toujours double-cliquer directement sur `studio_guitare.html` sans serveur : la progression sera gardée dans ton navigateur et synchronisée dès que tu relanceras le serveur).*
+
+## Synchroniser sur GitHub (Mac <-> Windows)
+
+Quand tu as fini ta session de guitare :
+```bash
+git add progression.json app/progression.js
+git commit -m "Progression niveau"
+git push
+```
+
+Quand tu passes sur ton autre machine (Windows ou Mac) :
+```bash
+git pull
+```
+Lance ensuite l'app via le raccourci (`start.command` ou `start.bat`) : ton niveau, ton XP et toutes tes stats sont là.
 
 ## Ajouter du contenu
 

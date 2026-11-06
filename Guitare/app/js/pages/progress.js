@@ -223,9 +223,9 @@
           <label class="row between"><span><b>Tout débloquer dans le cours</b><br><span class="small muted">Si tu as déjà de l'expérience : tous les chapitres et boss accessibles</span></span><input type="checkbox" data-unlock ${s.settings.unlockAll ? 'checked' : ''}></label>
         </div>
         <div class="card stack">
-          <h3>Ta progression</h3>
-          <p class="small muted">Elle est enregistrée dans ce navigateur, sur cet ordinateur. Vider les données du navigateur l'effacerait : exporte-la de temps en temps.</p>
-          <div class="row"><button class="btn" data-export>Exporter ma progression</button>
+          <h3>Ta progression & Synchronisation Git</h3>
+          <p class="small muted">Ta progression se sauvegarde automatiquement en temps réel dans <code>progression.json</code> dès que le serveur local est lancé (via <code>start.command</code> sur Mac ou <code>start.bat</code> sur Windows). Tu n'as plus qu'à faire <code>git push</code> pour la centraliser sur GitHub.</p>
+          <div class="row"><button class="btn" data-export>Exporter une copie (.json)</button>
             <label class="btn">Importer un fichier<input type="file" accept="application/json,.json" data-import hidden></label>
             <button class="btn danger" data-reset>Tout effacer</button></div>
         </div>

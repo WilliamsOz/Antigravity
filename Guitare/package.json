@@ -1,0 +1,10 @@
+{
+  "name": "guitarstudio",
+  "version": "2.0.0",
+  "description": "Studio d'apprentissage guitare classique, fingerstyle et flamenco",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "validate": "node tools/validate.js"
+  }
+}
